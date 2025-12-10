@@ -8,19 +8,26 @@ public class BallSpawnerAuthoring : MonoBehaviour
 {
     public GameObject prefab;
     public float interval;
+    public int maxBalls;
+    public int ballsToSpawn;
+    public float ballSpeed;
 
     private class Baker : Baker<BallSpawnerAuthoring>
     {
         public override void Bake(BallSpawnerAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.None);
+            Entity prefabEntity = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic);
 
             AddComponent(entity, new SpawnerData 
             {
-                prefab = GetEntity(authoring.prefab),
+                prefab = prefabEntity,
                 interval = authoring.interval,
                 timeLeft = authoring.interval,
-                position = authoring.transform.position
+                position = authoring.transform.position,
+                maxBalls = authoring.maxBalls,
+                ballsToSpawn = authoring.ballsToSpawn,
+                ballSpeed = authoring.ballSpeed
             });
         }
     }
@@ -32,4 +39,7 @@ public struct SpawnerData : IComponentData
     public float interval;
     public float timeLeft;
     public float3 position;
+    public int maxBalls;
+    public int ballsToSpawn;
+    public float ballSpeed;
 }

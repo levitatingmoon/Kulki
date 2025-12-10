@@ -4,7 +4,8 @@ using Unity.Mathematics;
 
 public class BrickAuthoring : MonoBehaviour
 {
-    public int lives;
+    public int maxLives;
+    public int currentLives;
 
     private class Baker : Baker<BrickAuthoring>
     {
@@ -14,7 +15,8 @@ public class BrickAuthoring : MonoBehaviour
 
             AddComponent(entity, new BrickData
             {
-                lives = authoring.lives
+                maxLives = authoring.maxLives,
+                currentLives = authoring.currentLives
             });
         }
     }

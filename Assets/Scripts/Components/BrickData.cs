@@ -4,7 +4,8 @@ using Unity.Mathematics;
 
 public struct BrickData : IComponentData
 {
-    public int lives;
+    public int maxLives;
+    public int currentLives;
 }
 
 public struct BrickTag : IComponentData

@@ -10,6 +10,7 @@ public partial struct BallInputSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
+        
         if(hasShot)
         {
             return;
@@ -31,6 +32,6 @@ public partial struct BallInputSystem : ISystem
                 vel.ValueRW.Linear = direction * ball.ValueRO.speed;
             }
         }
-
+    
     }
 }

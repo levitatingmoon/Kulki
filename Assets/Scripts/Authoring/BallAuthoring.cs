@@ -13,15 +13,8 @@ public class BallAuthoring : MonoBehaviour
         public override void Bake(BallAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-
-            var collider = Unity.Physics.SphereCollider.Create(
-                new SphereGeometry { Center = float3.zero, Radius = 0.5f },
-                CollisionFilter.Default,
-                new Unity.Physics.Material { Friction = 0f, Restitution = 1f });
-
-            var mass = PhysicsMass.CreateDynamic(collider.Value.MassProperties, 1f);
-            AddComponent(entity, mass);
-
+            
+            /*
             AddComponent(entity, new PhysicsVelocity 
             { 
                 Linear = float3.zero, 
@@ -38,7 +31,7 @@ public class BallAuthoring : MonoBehaviour
             { 
                 Value = 0f 
             });
-
+            */
             AddComponent(entity, new BallData 
             { 
                 speed = authoring.speed 
