@@ -14,24 +14,6 @@ public class BallAuthoring : MonoBehaviour
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             
-            /*
-            AddComponent(entity, new PhysicsVelocity 
-            { 
-                Linear = float3.zero, 
-                Angular = float3.zero 
-            });
-
-            AddComponent(entity, new PhysicsDamping 
-            { 
-                Linear = 0f, 
-                Angular = 0f 
-            });
-
-            AddComponent(entity, new PhysicsGravityFactor 
-            { 
-                Value = 0f 
-            });
-            */
             AddComponent(entity, new BallData 
             { 
                 speed = authoring.speed 

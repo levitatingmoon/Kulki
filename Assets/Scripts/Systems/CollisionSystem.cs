@@ -21,7 +21,7 @@ public partial class DeleteBallOnCollisionSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        var ballQuery = SystemAPI.QueryBuilder().WithAll<BallData>().Build();
+        //var ballQuery = SystemAPI.QueryBuilder().WithAll<BallData>().Build();
         var simulation = SystemAPI.GetSingleton<SimulationSingleton>();
 
         ballLookup.Update(this);
