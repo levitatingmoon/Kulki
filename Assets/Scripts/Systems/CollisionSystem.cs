@@ -4,7 +4,7 @@ using Unity.Physics.Systems;
 using Unity.Collections;
 using UnityEngine;
 
-public partial class DeleteBallOnCollisionSystem : SystemBase
+public partial class CollisionSystem : SystemBase
 {
     private ComponentLookup<BallData> ballLookup;
     private ComponentLookup<WallData> wallLookup;
@@ -21,14 +21,14 @@ public partial class DeleteBallOnCollisionSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        //var ballQuery = SystemAPI.QueryBuilder().WithAll<BallData>().Build();
+        var ballQuery = SystemAPI.QueryBuilder().WithAll<BallData>().Build();
         var simulation = SystemAPI.GetSingleton<SimulationSingleton>();
 
         ballLookup.Update(this);
         wallLookup.Update(this);
         brickLookup.Update(this);
 
-        var destroyList = new NativeList<Entity>(Allocator.TempJob);
+        var destroyList = new NativeList<Entity>(ballQuery.CalculateEntityCount(), Allocator.TempJob);
 
         var job = new ColliderJob
         {

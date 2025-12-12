@@ -7,7 +7,7 @@ using Unity.Physics;
 
 public partial struct BallSpawnerSystem : ISystem
 {
-    private bool _hasShot;
+    public bool hasShot;
     private float3 _shotDirection;
 
     public void OnCreate(ref SystemState state)
@@ -18,6 +18,7 @@ public partial struct BallSpawnerSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var spawnerQuery = SystemAPI.QueryBuilder().WithAll<SpawnerData>().Build();
+        var gameState = SystemAPI.GetSingleton<GameState>();
 
         if (spawnerQuery.IsEmpty)
         {
@@ -28,9 +29,9 @@ public partial struct BallSpawnerSystem : ISystem
 
         foreach(var spawner in SystemAPI.Query<RefRW<SpawnerData>>())
         {
-            if (!_hasShot && Mouse.current.leftButton.wasPressedThisFrame)
+            if (!hasShot && Mouse.current.leftButton.wasPressedThisFrame && gameState.state == 1)
             {   
-                _hasShot = true;
+                hasShot = true;
                 Camera camera = Camera.main;
                 float2 screenPos = Mouse.current.position.ReadValue();
                 float3 worldPos = camera.ScreenToWorldPoint(new float3(screenPos, 0));
@@ -48,7 +49,7 @@ public partial struct BallSpawnerSystem : ISystem
 
             spawner.ValueRW.timeLeft -= SystemAPI.Time.DeltaTime;
 
-            if(!_hasShot || spawner.ValueRO.ballsToSpawn <= 0 || spawner.ValueRW.timeLeft > 0)
+            if(!hasShot || spawner.ValueRO.ballsToSpawn <= 0 || spawner.ValueRW.timeLeft > 0)
             {
                 return;
             }
