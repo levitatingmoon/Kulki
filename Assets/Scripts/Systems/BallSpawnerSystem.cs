@@ -18,11 +18,17 @@ public partial struct BallSpawnerSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var spawnerQuery = SystemAPI.QueryBuilder().WithAll<SpawnerData>().Build();
+        var resetQuery = SystemAPI.QueryBuilder().WithAll<ResetRequest>().Build();
         var gameState = SystemAPI.GetSingleton<GameState>();
 
         if (spawnerQuery.IsEmpty)
         {
             return;
+        }
+
+        if (!resetQuery.IsEmpty)
+        {
+            hasShot = false;
         }
 
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);

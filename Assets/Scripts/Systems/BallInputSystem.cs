@@ -19,6 +19,7 @@ public partial struct BallInputSystem : ISystem
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
+            /*
             _hasShot = true;
             Camera camera = Camera.main;
             float2 screenPos = Mouse.current.position.ReadValue();
@@ -34,6 +35,7 @@ public partial struct BallInputSystem : ISystem
                 float3 direction = math.normalize(worldPos - ballPos);
                 vel.ValueRW.Linear = direction * ball.ValueRO.speed;
             }
+            */
         }
     
     }

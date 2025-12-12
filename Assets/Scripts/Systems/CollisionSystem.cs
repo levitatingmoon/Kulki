@@ -28,7 +28,7 @@ public partial class CollisionSystem : SystemBase
         wallLookup.Update(this);
         brickLookup.Update(this);
 
-        var destroyList = new NativeList<Entity>(ballQuery.CalculateEntityCount(), Allocator.TempJob);
+        var destroyList = new NativeList<Entity>(ballQuery.CalculateEntityCount() * 4, Allocator.TempJob);
 
         var job = new ColliderJob
         {

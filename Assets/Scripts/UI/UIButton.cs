@@ -35,7 +35,8 @@ public class UIButton : MonoBehaviour
             gameState.state = 0;
             endPopUp.SetActive(false);
             startPopUp.SetActive(true);
-            //reset values ex. has shot, spawn bricks again, reset points
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            entityManager.CreateEntity(typeof(ResetRequest));
         }
 
         entityManager.SetComponentData(gameStateEntity, gameState);

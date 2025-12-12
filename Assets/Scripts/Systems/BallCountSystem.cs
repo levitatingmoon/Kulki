@@ -9,12 +9,19 @@ public partial class BallCountSystem : SystemBase
     protected override void OnCreate()
     {
         ballQuery = GetEntityQuery(typeof(BallData));
+
         RequireForUpdate<GameState>();
     }
 
     protected override void OnUpdate()
     {
+        var resetQuery = SystemAPI.QueryBuilder().WithAll<ResetRequest>().Build();
         var gameState = SystemAPI.GetSingleton<GameState>();
+
+        if (!resetQuery.IsEmpty)
+        {
+            _wasBallSpawned = false;
+        }
 
         int count = ballQuery.CalculateEntityCount();
         if (count > 0)
