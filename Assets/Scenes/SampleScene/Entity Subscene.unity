@@ -376,7 +376,7 @@ MonoBehaviour:
       m_Override: 0
       m_Value:
         Value: 0
-        CombineMode: 0
+        CombineMode: 1
     m_Restitution:
       m_Override: 0
       m_Value:
@@ -625,7 +625,7 @@ MonoBehaviour:
       m_Override: 0
       m_Value:
         Value: 0
-        CombineMode: 0
+        CombineMode: 1
     m_Restitution:
       m_Override: 0
       m_Value:
@@ -874,7 +874,7 @@ MonoBehaviour:
       m_Override: 0
       m_Value:
         Value: 0
-        CombineMode: 0
+        CombineMode: 1
     m_Restitution:
       m_Override: 0
       m_Value:
@@ -1123,7 +1123,7 @@ MonoBehaviour:
       m_Override: 0
       m_Value:
         Value: 0
-        CombineMode: 0
+        CombineMode: 1
     m_Restitution:
       m_Override: 0
       m_Value:
