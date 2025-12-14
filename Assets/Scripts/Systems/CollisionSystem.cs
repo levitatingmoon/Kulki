@@ -28,6 +28,9 @@ public partial class CollisionSystem : SystemBase
         wallLookup.Update(this);
         brickLookup.Update(this);
 
+        var scoreHits = new NativeReference<int>(Allocator.TempJob);
+        scoreHits.Value = 0;
+
         var destroyList = new NativeList<Entity>(ballQuery.CalculateEntityCount() * 4, Allocator.TempJob);
 
         var job = new ColliderJob
@@ -35,7 +38,8 @@ public partial class CollisionSystem : SystemBase
             ballLookup = ballLookup,
             wallLookup = wallLookup,
             brickLookup = brickLookup,
-            destroyList = destroyList.AsParallelWriter()
+            destroyList = destroyList.AsParallelWriter(),
+            scoreHits = scoreHits
         };
 
         Dependency = job.Schedule(simulation, Dependency);
@@ -52,6 +56,16 @@ public partial class CollisionSystem : SystemBase
         ecb.Dispose();
         destroyList.Dispose();
 
+        if (scoreHits.Value > 0)
+        {
+            var scoreEntity = SystemAPI.GetSingletonEntity<ScoreData>();
+            var score = EntityManager.GetComponentData<ScoreData>(scoreEntity);
+            score.points += scoreHits.Value;
+            EntityManager.SetComponentData(scoreEntity, score);
+        }
+
+        scoreHits.Dispose();
+
     }
 
     public struct ColliderJob : ICollisionEventsJob
@@ -61,6 +75,7 @@ public partial class CollisionSystem : SystemBase
         public ComponentLookup<BrickData> brickLookup;
 
         public NativeList<Entity>.ParallelWriter destroyList;
+        public NativeReference<int> scoreHits;
 
         public void Execute(CollisionEvent collisionEvent)
         {
@@ -101,6 +116,7 @@ public partial class CollisionSystem : SystemBase
             {
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityB);
                 brick.ValueRW.currentLives -= 1;
+                scoreHits.Value += 1;
                 if(brick.ValueRO.currentLives <= 0)
                 {
                     //Debug.Log("Destroy brick B");
@@ -112,6 +128,7 @@ public partial class CollisionSystem : SystemBase
             {
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityA);
                 brick.ValueRW.currentLives -= 1;
+                scoreHits.Value += 1;
                 if(brick.ValueRO.currentLives <= 0)
                 {
                     //Debug.Log("Destroy brick A");

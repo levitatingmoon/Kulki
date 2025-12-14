@@ -50,7 +50,6 @@ public partial struct BallSpawnerSystem : ISystem
 
                 spawner.ValueRW.ballsToSpawn = spawner.ValueRO.maxBalls;
 
-
             }
 
             spawner.ValueRW.timeLeft -= SystemAPI.Time.DeltaTime;
