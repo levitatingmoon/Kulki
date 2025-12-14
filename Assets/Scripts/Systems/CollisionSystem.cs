@@ -76,6 +76,7 @@ public partial class CollisionSystem : SystemBase
             bool aIsBrick = brickLookup.HasComponent(a);
             bool bIsBrick = brickLookup.HasComponent(b);
 
+            /*
             if(aIsBall && bIsWall)
             {
                 RefRW<WallData> wall = wallLookup.GetRefRW(collisionEvent.EntityB);
@@ -95,7 +96,7 @@ public partial class CollisionSystem : SystemBase
                     destroyList.AddNoResize(b);
                 }
             }
-
+            */
             if(aIsBall && bIsBrick)
             {
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityB);
