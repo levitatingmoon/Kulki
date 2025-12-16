@@ -7,6 +7,7 @@ public partial class GameOverSystem : SystemBase
     private EntityQuery brickQuery;
     private EntityQuery spawnerQuery;
 
+    private bool _wasLastShotBallSpawned = false;
     private bool _wasBallSpawned = false;
 
     protected override void OnCreate()
@@ -26,6 +27,7 @@ public partial class GameOverSystem : SystemBase
 
         if (!resetQuery.IsEmpty)
         {
+            _wasLastShotBallSpawned = false;
             _wasBallSpawned = false;
         }
 
@@ -34,12 +36,17 @@ public partial class GameOverSystem : SystemBase
         var spawner = SystemAPI.GetSingleton<SpawnerData>();
         bool allShotsFired = spawner.shotsFired >= spawner.shotCount;
 
-        if (activeBalls > 0  && allShotsFired)
+        if (activeBalls > 0)
         {
             _wasBallSpawned = true;
+
+            if (allShotsFired)
+            {
+                _wasLastShotBallSpawned = true;
+            }
         }
         
-        if (_wasBallSpawned && activeBalls == 0 && gameState.state == 1 && (remainingBricks == 0 || allShotsFired))
+        if ((_wasLastShotBallSpawned || (_wasBallSpawned && remainingBricks == 0)) && activeBalls == 0 && gameState.state == 1)
         {
             Debug.Log(activeBalls);
             gameState.state = 2;
