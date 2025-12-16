@@ -45,6 +45,7 @@ public partial struct BallSpawnerSystem : ISystem
 
         if (!hasShot && Mouse.current.leftButton.wasPressedThisFrame && gameState.state == 1)
         {   
+            //Set z to 0 because the ball only moves on two axes
             hasShot = true;
             Camera camera = Camera.main;
             float2 screenPos = Mouse.current.position.ReadValue();
@@ -52,7 +53,6 @@ public partial struct BallSpawnerSystem : ISystem
             worldPos.z = 0;
             float3 spawnerPos = spawner.ValueRO.position;
             spawnerPos.z = 0;
-            Debug.Log("Input: " + worldPos);
 
             _shotDirection = math.normalize(worldPos - spawnerPos);
 

@@ -4,28 +4,28 @@ using Unity.Collections;
 
 public partial struct TriggerSystem : ISystem
 {
-    private ComponentLookup<BallData> ballLookup;
-    private ComponentLookup<WallData> wallLookup;
+    private ComponentLookup<BallData> _ballLookup;
+    private ComponentLookup<WallData> _wallLookup;
 
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<SimulationSingleton>();
 
-        ballLookup = state.GetComponentLookup<BallData>(true);
-        wallLookup = state.GetComponentLookup<WallData>(true);
+        _ballLookup = state.GetComponentLookup<BallData>(true);
+        _wallLookup = state.GetComponentLookup<WallData>(true);
     }
 
     public void OnUpdate(ref SystemState state)
     {
-        ballLookup.Update(ref state);
-        wallLookup.Update(ref state);
+        _ballLookup.Update(ref state);
+        _wallLookup.Update(ref state);
 
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
         var job = new TriggerJob
         {
-            ballLookup = ballLookup,
-            wallLookup = wallLookup,
+            ballLookup = _ballLookup,
+            wallLookup = _wallLookup,
             ecb = ecb.AsParallelWriter()
         };
 

@@ -7,27 +7,27 @@ public class UIButton : MonoBehaviour
     public GameObject startPopUp;
     public GameObject endPopUp;
 
-    private EntityManager entityManager;
-    private EntityQuery entityQuery;
+    private EntityManager _entityManager;
+    private EntityQuery _entityQuery;
 
     void Start()
     {
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        entityQuery = entityManager.CreateEntityQuery(typeof(GameState));
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        _entityQuery = _entityManager.CreateEntityQuery(typeof(GameState));
     }
 
     public void OnClickMenu()
     {
-        EntityQuery entityQuery = entityManager.CreateEntityQuery(typeof(GameState));
-        Entity gameStateEntity = entityQuery.GetSingletonEntity();
-        GameState gameState = entityManager.GetComponentData<GameState>(gameStateEntity);
+        EntityQuery _entityQuery = _entityManager.CreateEntityQuery(typeof(GameState));
+        Entity gameStateEntity = _entityQuery.GetSingletonEntity();
+        GameState gameState = _entityManager.GetComponentData<GameState>(gameStateEntity);
 
         gameState.state = 0;
         endPopUp.SetActive(false);
         startPopUp.SetActive(true);
-        entityManager.CreateEntity(typeof(ResetRequest));
+        _entityManager.CreateEntity(typeof(ResetRequest));
 
-        entityManager.SetComponentData(gameStateEntity, gameState);
+        _entityManager.SetComponentData(gameStateEntity, gameState);
     }
     
 }

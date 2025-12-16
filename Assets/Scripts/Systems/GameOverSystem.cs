@@ -3,19 +3,19 @@ using UnityEngine;
 
 public partial class GameOverSystem : SystemBase
 {
-    private EntityQuery ballQuery;
-    private EntityQuery brickQuery;
-    private EntityQuery spawnerQuery;
+    private EntityQuery _ballQuery;
+    private EntityQuery _brickQuery;
+    private EntityQuery _spawnerQuery;
 
     private bool _wasLastShotBallSpawned = false;
     private bool _wasBallSpawned = false;
 
     protected override void OnCreate()
     {
-        ballQuery = GetEntityQuery(typeof(BallData));
+        _ballQuery = GetEntityQuery(typeof(BallData));
 
-        brickQuery = GetEntityQuery(ComponentType.ReadOnly<BrickData>());
-        spawnerQuery = GetEntityQuery(ComponentType.ReadOnly<SpawnerData>());
+        _brickQuery = GetEntityQuery(ComponentType.ReadOnly<BrickData>());
+        _spawnerQuery = GetEntityQuery(ComponentType.ReadOnly<SpawnerData>());
 
         RequireForUpdate<GameState>();
     }
@@ -31,8 +31,8 @@ public partial class GameOverSystem : SystemBase
             _wasBallSpawned = false;
         }
 
-        int activeBalls = ballQuery.CalculateEntityCount();
-        int remainingBricks = brickQuery.CalculateEntityCount();
+        int activeBalls = _ballQuery.CalculateEntityCount();
+        int remainingBricks = _brickQuery.CalculateEntityCount();
         var spawner = SystemAPI.GetSingleton<SpawnerData>();
         bool allShotsFired = spawner.shotsFired >= spawner.shotCount;
 
@@ -46,9 +46,9 @@ public partial class GameOverSystem : SystemBase
             }
         }
         
+        //Game over if all shots were fired and all balls disappeared or if all bricks are gone
         if ((_wasLastShotBallSpawned || (_wasBallSpawned && remainingBricks == 0)) && activeBalls == 0 && gameState.state == 1)
         {
-            Debug.Log(activeBalls);
             gameState.state = 2;
             SystemAPI.SetSingleton(gameState);
             var entity = EntityManager.CreateEntity();

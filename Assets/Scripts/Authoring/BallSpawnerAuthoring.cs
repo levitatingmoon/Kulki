@@ -7,12 +7,12 @@ using Unity.Transforms;
 public class BallSpawnerAuthoring : MonoBehaviour
 {
     public GameObject prefab;
-    public float interval;
-    public int maxBalls;
-    public int ballsToSpawn;
+    public float interval; //Time between spawning balls
+    public int maxBalls; //Number of balls per shot
+    public int ballsToSpawn; //Number of balls left to spawn
     public float ballSpeed;
-    public int shotCount;
-    public int shotsFired;
+    public int shotCount; //Max number of shots
+    public int shotsFired; //Number of already done shots
 
     private class Baker : Baker<BallSpawnerAuthoring>
     {

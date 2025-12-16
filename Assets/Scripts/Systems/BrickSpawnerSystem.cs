@@ -63,6 +63,7 @@ partial struct BrickSpawnerSystem : ISystem
             .GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
+        //Spawning bricks based on the string
         for (int y = 0; y < brickLevel.Length; y++)
         {
             string row = brickLevel[y];

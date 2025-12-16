@@ -6,28 +6,28 @@ public class ScoreManager : MonoBehaviour
 {
     public TMP_Text scoreText;
 
-    EntityManager em;
-    Entity scoreEntity;
+    private EntityManager _entityManager;
+    private Entity _scoreEntity;
 
     void Start()
     {
-        em = World.DefaultGameObjectInjectionWorld.EntityManager;
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        var query = em.CreateEntityQuery(typeof(ScoreData));
+        var query = _entityManager.CreateEntityQuery(typeof(ScoreData));
         if (query.IsEmpty)
         {
-            scoreEntity = em.CreateEntity(typeof(ScoreData));
-            em.SetComponentData(scoreEntity, new ScoreData { points = 0 });
+            _scoreEntity = _entityManager.CreateEntity(typeof(ScoreData));
+            _entityManager.SetComponentData(_scoreEntity, new ScoreData { points = 0 });
         }
         else
         {
-            scoreEntity = query.GetSingletonEntity();
+            _scoreEntity = query.GetSingletonEntity();
         }
     }
 
     void Update()
     {
-        int score = em.GetComponentData<ScoreData>(scoreEntity).points;
+        int score = _entityManager.GetComponentData<ScoreData>(_scoreEntity).points;
         scoreText.text = score.ToString();
     }
 }

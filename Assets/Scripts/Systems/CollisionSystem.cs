@@ -6,17 +6,17 @@ using UnityEngine;
 
 public partial class CollisionSystem : SystemBase
 {
-    private ComponentLookup<BallData> ballLookup;
-    private ComponentLookup<WallData> wallLookup;
-    private ComponentLookup<BrickData> brickLookup;
+    private ComponentLookup<BallData> _ballLookup;
+    private ComponentLookup<WallData> _wallLookup;
+    private ComponentLookup<BrickData> _brickLookup;
 
     protected override void OnCreate()
     {
         RequireForUpdate<SimulationSingleton>();
         RequireForUpdate<PhysicsWorldSingleton>();
-        ballLookup = GetComponentLookup<BallData>();
-        wallLookup = GetComponentLookup<WallData>();
-        brickLookup = GetComponentLookup<BrickData>();
+        _ballLookup = GetComponentLookup<BallData>();
+        _wallLookup = GetComponentLookup<WallData>();
+        _brickLookup = GetComponentLookup<BrickData>();
     }
 
     protected override void OnUpdate()
@@ -24,9 +24,9 @@ public partial class CollisionSystem : SystemBase
         var ballQuery = SystemAPI.QueryBuilder().WithAll<BallData>().Build();
         var simulation = SystemAPI.GetSingleton<SimulationSingleton>();
 
-        ballLookup.Update(this);
-        wallLookup.Update(this);
-        brickLookup.Update(this);
+        _ballLookup.Update(this);
+        _wallLookup.Update(this);
+        _brickLookup.Update(this);
 
         var scoreHits = new NativeReference<int>(Allocator.TempJob);
         scoreHits.Value = 0;
@@ -35,9 +35,9 @@ public partial class CollisionSystem : SystemBase
 
         var job = new ColliderJob
         {
-            ballLookup = ballLookup,
-            wallLookup = wallLookup,
-            brickLookup = brickLookup,
+            ballLookup = _ballLookup,
+            wallLookup = _wallLookup,
+            brickLookup = _brickLookup,
             destroyList = destroyList.AsParallelWriter(),
             scoreHits = scoreHits
         };
@@ -91,27 +91,6 @@ public partial class CollisionSystem : SystemBase
             bool aIsBrick = brickLookup.HasComponent(a);
             bool bIsBrick = brickLookup.HasComponent(b);
 
-            /*
-            if(aIsBall && bIsWall)
-            {
-                RefRW<WallData> wall = wallLookup.GetRefRW(collisionEvent.EntityB);
-                if(wall.ValueRO.isDestroying)
-                {
-                    //Debug.Log("Destroy ball A");
-                    destroyList.AddNoResize(a);
-                }
-            }
-
-            if(aIsWall && bIsBall)
-            {
-                RefRW<WallData> wall = wallLookup.GetRefRW(collisionEvent.EntityA);
-                if(wall.ValueRO.isDestroying)
-                {
-                    //Debug.Log("Destroy ball B");
-                    destroyList.AddNoResize(b);
-                }
-            }
-            */
             if(aIsBall && bIsBrick)
             {
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityB);
@@ -119,7 +98,6 @@ public partial class CollisionSystem : SystemBase
                 scoreHits.Value += 1;
                 if(brick.ValueRO.currentLives <= 0)
                 {
-                    //Debug.Log("Destroy brick B");
                     destroyList.AddNoResize(b);
                 }
             }
@@ -131,7 +109,6 @@ public partial class CollisionSystem : SystemBase
                 scoreHits.Value += 1;
                 if(brick.ValueRO.currentLives <= 0)
                 {
-                    //Debug.Log("Destroy brick A");
                     destroyList.AddNoResize(a);
                 }
             }

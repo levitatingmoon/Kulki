@@ -8,34 +8,36 @@ public class UIActivity : MonoBehaviour
     public GameObject endPopUp;
     public TMP_Text scoreText;
 
-    private EntityManager entityManager;
-    private EntityQuery entityQuery;
-    private EntityQuery gameOverQuery;
+    private EntityManager _entityManager;
+    private EntityQuery _entityQuery;
+    private EntityQuery _gameOverQuery;
 
     void Start()
     {
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        entityQuery = entityManager.CreateEntityQuery(typeof(GameState));
-        gameOverQuery = entityManager.CreateEntityQuery(typeof(GameOverEvent));
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        _entityQuery = _entityManager.CreateEntityQuery(typeof(GameState));
+        _gameOverQuery = _entityManager.CreateEntityQuery(typeof(GameOverEvent));
         endPopUp.SetActive(false);
     }
 
     void Update()
     {
-        if (gameOverQuery.CalculateEntityCount() > 0)
+        if (_gameOverQuery.CalculateEntityCount() > 0)
         {
             endPopUp.SetActive(true);
 
-            if (!entityManager.CreateEntityQuery(typeof(ScoreData)).IsEmpty)
+            if (!_entityManager.CreateEntityQuery(typeof(ScoreData)).IsEmpty)
             {
-                var scoreEntity = entityManager.CreateEntityQuery(typeof(ScoreData)).GetSingletonEntity();
-                var score = entityManager.GetComponentData<ScoreData>(scoreEntity).points;
+                var scoreEntity = _entityManager.CreateEntityQuery(typeof(ScoreData)).GetSingletonEntity();
+                var score = _entityManager.GetComponentData<ScoreData>(scoreEntity).points;
                 scoreText.text = "Score: " + score.ToString();
             }
 
-            var entities = gameOverQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
+            var entities = _gameOverQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
             foreach (var e in entities)
-                entityManager.DestroyEntity(e);
+            {
+                _entityManager.DestroyEntity(e);
+            }
             entities.Dispose();
         }
     }

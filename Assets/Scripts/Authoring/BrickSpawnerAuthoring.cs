@@ -6,6 +6,7 @@ using Unity.Transforms;
 
 public class BrickSpawnerAuthoring : MonoBehaviour
 {
+    //Prefabs based on number of lives
     public GameObject prefabOne;
     public GameObject prefabTwo;
     public GameObject prefabThree;

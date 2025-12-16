@@ -14,25 +14,22 @@ public class UISettings : MonoBehaviour
     public TMP_Text shotText;
     public TMP_Text ballText;
 
-    private EntityManager entityManager;
-    private EntityQuery entityQuery;
+    private EntityManager _entityManager;
+    private EntityQuery _entityQuery;
 
     void Start()
     {
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        entityQuery = entityManager.CreateEntityQuery(typeof(SpawnerData));
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        _entityQuery = _entityManager.CreateEntityQuery(typeof(SpawnerData));
 
         shotSlider.value = 1;
         ballSlider.value = 15;
-
-        //shotText.text = shotSlider.value.ToString();
-        //ballText.text = ballSlider.value.ToString();
     }
 
     public void OnClickMenu()
     {
-        Entity ballSpawnerEntity = entityQuery.GetSingletonEntity();
-        SpawnerData ballSpawner = entityManager.GetComponentData<SpawnerData>(ballSpawnerEntity);
+        Entity ballSpawnerEntity = _entityQuery.GetSingletonEntity();
+        SpawnerData ballSpawner = _entityManager.GetComponentData<SpawnerData>(ballSpawnerEntity);
 
         ballSpawner.shotCount = Mathf.RoundToInt(shotSlider.value);
         ballSpawner.maxBalls = Mathf.RoundToInt(ballSlider.value);
@@ -40,18 +37,18 @@ public class UISettings : MonoBehaviour
         settingsPopUp.SetActive(false);
         startPopUp.SetActive(true);
 
-        entityManager.SetComponentData(ballSpawnerEntity, ballSpawner);
+        _entityManager.SetComponentData(ballSpawnerEntity, ballSpawner);
     }
 
     public void OnClickReset()
     {
-        Entity ballSpawnerEntity = entityQuery.GetSingletonEntity();
-        SpawnerData ballSpawner = entityManager.GetComponentData<SpawnerData>(ballSpawnerEntity);
+        Entity ballSpawnerEntity = _entityQuery.GetSingletonEntity();
+        SpawnerData ballSpawner = _entityManager.GetComponentData<SpawnerData>(ballSpawnerEntity);
 
         ballSpawner.shotCount = 1;
         ballSpawner.maxBalls = 15;
 
-        entityManager.SetComponentData(ballSpawnerEntity, ballSpawner);
+        _entityManager.SetComponentData(ballSpawnerEntity, ballSpawner);
 
         shotSlider.value = 1;
         ballSlider.value = 15;
