@@ -11,6 +11,8 @@ public class BallSpawnerAuthoring : MonoBehaviour
     public int maxBalls;
     public int ballsToSpawn;
     public float ballSpeed;
+    public int shotCount;
+    public int shotsFired;
 
     private class Baker : Baker<BallSpawnerAuthoring>
     {
@@ -27,7 +29,9 @@ public class BallSpawnerAuthoring : MonoBehaviour
                 position = authoring.transform.position,
                 maxBalls = authoring.maxBalls,
                 ballsToSpawn = authoring.ballsToSpawn,
-                ballSpeed = authoring.ballSpeed
+                ballSpeed = authoring.ballSpeed,
+                shotCount = authoring.shotCount,
+                shotsFired = authoring.shotsFired
             });
         }
     }
@@ -42,4 +46,6 @@ public struct SpawnerData : IComponentData
     public int maxBalls;
     public int ballsToSpawn;
     public float ballSpeed;
+    public int shotCount;
+    public int shotsFired;
 }

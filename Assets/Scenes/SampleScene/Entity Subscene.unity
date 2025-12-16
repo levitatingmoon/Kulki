@@ -201,6 +201,7 @@ MonoBehaviour:
   maxBalls: 15
   ballsToSpawn: 0
   ballSpeed: 15
+  shotCount: 1
 --- !u!4 &234575930
 Transform:
   m_ObjectHideFlags: 0

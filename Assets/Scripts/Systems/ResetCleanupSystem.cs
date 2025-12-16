@@ -4,10 +4,9 @@ using Unity.Collections;
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 [UpdateAfter(typeof(BrickSpawnerSystem))]
 [UpdateAfter(typeof(BallSpawnerSystem))]
-[UpdateAfter(typeof(BallCountSystem))]
+[UpdateAfter(typeof(GameOverSystem))]
 [UpdateAfter(typeof(BallInputSystem))]
 [UpdateAfter(typeof(BallSystem))]
-[UpdateAfter(typeof(BrickSystem))]
 [UpdateAfter(typeof(CollisionSystem))]
 public partial class ResetCleanupSystem : SystemBase
 {

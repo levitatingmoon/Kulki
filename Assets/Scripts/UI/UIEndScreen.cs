@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class UIButton : MonoBehaviour
 {
-    public bool startGame = false;
-    public bool menu = false;
     public GameObject startPopUp;
     public GameObject endPopUp;
 
@@ -18,26 +16,16 @@ public class UIButton : MonoBehaviour
         entityQuery = entityManager.CreateEntityQuery(typeof(GameState));
     }
 
-    public void OnClick()
+    public void OnClickMenu()
     {
         EntityQuery entityQuery = entityManager.CreateEntityQuery(typeof(GameState));
         Entity gameStateEntity = entityQuery.GetSingletonEntity();
         GameState gameState = entityManager.GetComponentData<GameState>(gameStateEntity);
 
-        if(startGame)
-        {
-            gameState.state = 1;
-            startPopUp.SetActive(false);
-        }
-
-        if(menu)
-        {
-            gameState.state = 0;
-            endPopUp.SetActive(false);
-            startPopUp.SetActive(true);
-            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            entityManager.CreateEntity(typeof(ResetRequest));
-        }
+        gameState.state = 0;
+        endPopUp.SetActive(false);
+        startPopUp.SetActive(true);
+        entityManager.CreateEntity(typeof(ResetRequest));
 
         entityManager.SetComponentData(gameStateEntity, gameState);
     }

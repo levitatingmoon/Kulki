@@ -1,14 +1,20 @@
 using Unity.Entities;
 using UnityEngine;
 
-public partial class BallCountSystem : SystemBase
+public partial class GameOverSystem : SystemBase
 {
     private EntityQuery ballQuery;
+    private EntityQuery brickQuery;
+    private EntityQuery spawnerQuery;
+
     private bool _wasBallSpawned = false;
 
     protected override void OnCreate()
     {
         ballQuery = GetEntityQuery(typeof(BallData));
+
+        brickQuery = GetEntityQuery(ComponentType.ReadOnly<BrickData>());
+        spawnerQuery = GetEntityQuery(ComponentType.ReadOnly<SpawnerData>());
 
         RequireForUpdate<GameState>();
     }
@@ -23,14 +29,19 @@ public partial class BallCountSystem : SystemBase
             _wasBallSpawned = false;
         }
 
-        int count = ballQuery.CalculateEntityCount();
-        if (count > 0)
+        int activeBalls = ballQuery.CalculateEntityCount();
+        int remainingBricks = brickQuery.CalculateEntityCount();
+        var spawner = SystemAPI.GetSingleton<SpawnerData>();
+        bool allShotsFired = spawner.shotsFired >= spawner.shotCount;
+
+        if (activeBalls > 0  && allShotsFired)
         {
             _wasBallSpawned = true;
         }
         
-        if (count == 0 && gameState.state == 1 && _wasBallSpawned)
+        if (_wasBallSpawned && activeBalls == 0 && gameState.state == 1 && (remainingBricks == 0 || allShotsFired))
         {
+            Debug.Log(activeBalls);
             gameState.state = 2;
             SystemAPI.SetSingleton(gameState);
             var entity = EntityManager.CreateEntity();
