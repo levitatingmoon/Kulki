@@ -38,6 +38,12 @@ public class UISettings : MonoBehaviour
         startPopUp.SetActive(true);
 
         _entityManager.SetComponentData(ballSpawnerEntity, ballSpawner);
+
+        var uiEntity = _entityManager.CreateEntityQuery(typeof(UIState)).GetSingletonEntity();
+        var ui = _entityManager.GetComponentData<UIState>(uiEntity);
+        ui.shotCount = ballSpawner.shotCount;
+        ui.maxBalls = ballSpawner.maxBalls;
+        _entityManager.SetComponentData(uiEntity, ui);
     }
 
     public void OnClickReset()
@@ -52,6 +58,14 @@ public class UISettings : MonoBehaviour
 
         shotSlider.value = 1;
         ballSlider.value = 15;
+
+        if (_entityManager.HasComponent<UIState>(ballSpawnerEntity))
+        {
+            var ui = _entityManager.GetComponentData<UIState>(ballSpawnerEntity);
+            ui.shotCount = ballSpawner.shotCount;
+            ui.maxBalls = ballSpawner.maxBalls;
+            _entityManager.SetComponentData(ballSpawnerEntity, ui);
+        }
     }
 
     public void UpdateShotValue()

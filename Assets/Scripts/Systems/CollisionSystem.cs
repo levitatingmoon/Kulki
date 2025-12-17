@@ -17,6 +17,12 @@ public partial class CollisionSystem : SystemBase
         _ballLookup = GetComponentLookup<BallData>();
         _wallLookup = GetComponentLookup<WallData>();
         _brickLookup = GetComponentLookup<BrickData>();
+
+        if (!SystemAPI.HasSingleton<ScoreData>())
+        {
+            var entity = EntityManager.CreateEntity(typeof(ScoreData));
+            EntityManager.SetComponentData(entity, new ScoreData { points = 0 });
+        }
     }
 
     protected override void OnUpdate()

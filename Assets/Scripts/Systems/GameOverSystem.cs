@@ -51,9 +51,12 @@ public partial class GameOverSystem : SystemBase
         {
             gameState.state = 2;
             SystemAPI.SetSingleton(gameState);
-            var entity = EntityManager.CreateEntity();
-            EntityManager.AddComponent<GameOverEvent>(entity);
-            var query = GetEntityQuery(typeof(GameOverEvent));
+
+            if (SystemAPI.TryGetSingleton<UIState>(out var ui))
+            {
+                ui.gameOver = true;
+                SystemAPI.SetSingleton(ui);
+            }
         }
         
     }

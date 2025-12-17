@@ -7,7 +7,7 @@ public class BallShotManager : MonoBehaviour
     public TMP_Text ballShotText;
 
     private EntityManager _entityManager;
-    private Entity _spawnerEntity;
+    private Entity _uiEntity;
 
     private int _balls;
     private int _shots;
@@ -16,10 +16,10 @@ public class BallShotManager : MonoBehaviour
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        var spawnerQuery = _entityManager.CreateEntityQuery(typeof(SpawnerData));
-        if (!spawnerQuery.IsEmpty)
+        var uiQuery = _entityManager.CreateEntityQuery(typeof(UIState));
+        if (!uiQuery.IsEmpty)
         {
-            _spawnerEntity = spawnerQuery.GetSingletonEntity();
+            _uiEntity = uiQuery.GetSingletonEntity();
         }
 
         _balls = 0;
@@ -28,9 +28,9 @@ public class BallShotManager : MonoBehaviour
 
     void Update()
     {
-        int ballsValue = _entityManager.GetComponentData<SpawnerData>(_spawnerEntity).maxBalls;
-        int shotValue = _entityManager.GetComponentData<SpawnerData>(_spawnerEntity).shotCount;
-        if(_balls != ballsValue && _shots != shotValue)
+        int ballsValue = _entityManager.GetComponentData<UIState>(_uiEntity).maxBalls;
+        int shotValue = _entityManager.GetComponentData<UIState>(_uiEntity).shotCount;
+        if(_balls != ballsValue || _shots != shotValue)
         {
             _balls = ballsValue;
             _shots = shotValue;

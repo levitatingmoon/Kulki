@@ -13,21 +13,19 @@ public class ScoreManager : MonoBehaviour
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        var query = _entityManager.CreateEntityQuery(typeof(ScoreData));
-        if (query.IsEmpty)
+        var uiQuery = _entityManager.CreateEntityQuery(typeof(UIState));
+        if (!uiQuery.IsEmpty)
         {
-            _scoreEntity = _entityManager.CreateEntity(typeof(ScoreData));
-            _entityManager.SetComponentData(_scoreEntity, new ScoreData { points = 0 });
-        }
-        else
-        {
-            _scoreEntity = query.GetSingletonEntity();
+            _scoreEntity = uiQuery.GetSingletonEntity();
         }
     }
 
     void Update()
     {
-        int score = _entityManager.GetComponentData<ScoreData>(_scoreEntity).points;
-        scoreText.text = score.ToString();
+        if (_scoreEntity != Entity.Null)
+        {
+            var ui = _entityManager.GetComponentData<UIState>(_scoreEntity);
+            scoreText.text = ui.score.ToString();
+        }
     }
 }
