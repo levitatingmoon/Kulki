@@ -102,18 +102,17 @@ public partial class CollisionSystem : SystemBase
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityB);
                 brick.ValueRW.currentLives -= 1;
                 scoreHits.Value += 1;
-                if(brick.ValueRO.currentLives <= 0)
+                if(brick.ValueRW.currentLives <= 0)
                 {
                     destroyList.AddNoResize(b);
                 }
             }
-
-            if(aIsBrick && bIsBall)
+            else if(aIsBrick && bIsBall)
             {
                 RefRW<BrickData> brick = brickLookup.GetRefRW(collisionEvent.EntityA);
                 brick.ValueRW.currentLives -= 1;
                 scoreHits.Value += 1;
-                if(brick.ValueRO.currentLives <= 0)
+                if(brick.ValueRW.currentLives <= 0)
                 {
                     destroyList.AddNoResize(a);
                 }

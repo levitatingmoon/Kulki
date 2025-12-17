@@ -38,7 +38,7 @@ public partial struct BallSpawnerSystem : ISystem
             spawner.ValueRW.shotsFired = 0;
         }
 
-        if (hasShot && activeBalls == 0 && spawner.ValueRO.shotsFired < spawner.ValueRO.shotCount)
+        if (hasShot && activeBalls == 0 && spawner.ValueRO.ballsToSpawn == 0 && spawner.ValueRO.shotsFired < spawner.ValueRO.shotCount)
         {
             hasShot = false;
         }
@@ -58,6 +58,8 @@ public partial struct BallSpawnerSystem : ISystem
 
             spawner.ValueRW.ballsToSpawn = spawner.ValueRO.maxBalls;
             spawner.ValueRW.shotsFired++;
+
+            spawner.ValueRW.timeLeft = 0f;
 
         }
 
